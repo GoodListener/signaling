@@ -22,20 +22,21 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        logger.info("session connected : " + event.getUser());
+        logger.info("session connected : " + event.toString());
     }
 
     @EventListener
     public void handleWebSocketDisconnectedListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
-        if(username != null) {
-            logger.info("User Disconnected : " + username);
+        String userId = (String) headerAccessor.getSessionAttributes().get("userId");
+        if(userId != null) {
+            logger.info("User Disconnected : " + userId);
 
             SignalMessage signalMessage = new SignalMessage();
             signalMessage.setType(MessageType.LEAVE);
-            signalMessage.setSender(username);
+            signalMessage.setId(userId);
+            signalMessage.setMessage("Leave user");
 
             messagingTemplate.convertAndSend("/topic/public", signalMessage);
         }

@@ -12,6 +12,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	dev
 }
 
 repositories {
@@ -30,4 +31,8 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+bootRun {
+	classpath = sourceSets.main.runtimeClasspath + configurations.dev
 }
