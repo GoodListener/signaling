@@ -2,6 +2,7 @@ package com.ek.signaling.controller;
 
 import com.ek.signaling.model.MessageType;
 import com.ek.signaling.model.SignalMessage;
+import com.ek.signaling.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class WebSocketEventListener {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         logger.info("session connected : " + event.toString());
@@ -30,16 +34,19 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String userId = (String) headerAccessor.getSessionAttributes().get("userId");
+        String teamId = (String) headerAccessor.getSessionAttributes().get("teamId");
         if(userId != null) {
             logger.info("User Disconnected : " + userId);
 
             SignalMessage signalMessage = new SignalMessage();
             signalMessage.setType(MessageType.LEAVE);
             signalMessage.setId(userId);
+            signalMessage.setTeamId(teamId);
             signalMessage.setMessage("Leave user");
 
-            messagingTemplate.convertAndSend("/topic/public", signalMessage);
+            memberRepository.deleteById(userId);
+
+            messagingTemplate.convertAndSend("/topic/" + teamId, signalMessage);
         }
     }
-
 }

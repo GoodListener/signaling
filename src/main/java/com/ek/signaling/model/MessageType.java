@@ -1,5 +1,6 @@
 package com.ek.signaling.model;
 
 public enum MessageType {
-    JOIN, LEAVE, OFFER, ANSWER, CANDIDATE
+    JOIN, LEAVE, OFFER, ANSWER, CANDIDATE,
+    USERLIST
 }

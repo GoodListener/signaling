@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class SignalMessage {
     private MessageType type;
-    private String message;
+    private Object message;
     private String id;
+    private String teamId;
+    private String userName;
 }
