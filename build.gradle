@@ -25,6 +25,7 @@ apply plugin: 'com.google.cloud.tools.appengine'  // App Engine tasks
 dependencies {
     compile 'com.google.appengine:appengine-api-1.0-sdk:+'  // Latest App Engine Api's
 
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.3.2.RELEASE'
     compileOnly 'org.projectlombok:lombok:1.18.12'
 //	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.3.2.RELEASE'
